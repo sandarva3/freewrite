@@ -665,19 +665,15 @@ Here's my journal entry:
         return "-".join(words) if words else f"Entry {date}"
 
     def create_pdf_from_text(self, text, output_path):
-        writer = PdfWriter()
-        page = writer.add_page()
-        page.mediabox = [0, 0, 612, 792]
-        page.trimbox = [72, 72, 612 - 72, 792 - 72]
+        from PyQt5.QtPrintSupport import QPrinter
+        printer = QPrinter()
+        printer.setOutputFormat(QPrinter.PdfFormat)
+        printer.setOutputFileName(output_path)
+        printer.setPageMargins(72, 72, 72, 72, QPrinter.Point)
         text_doc = QTextDocument()
         text_doc.setDefaultFont(QFont(self.selected_font, self.font_size))
         text_doc.setPlainText(text.strip())
-        painter = QPainter()
-        painter.begin(page)
-        text_doc.drawContents(painter)
-        painter.end()
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        text_doc.print_(printer)
 
     def load_existing_entries(self):
         os.makedirs(self.documents_directory, exist_ok=True)
