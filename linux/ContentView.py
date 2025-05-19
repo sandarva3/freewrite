@@ -294,11 +294,13 @@ Here's my journal entry:
         
         # Check current theme
         is_dark = self.color_scheme == "dark"
+        print(f"the dark: {is_dark}")
         
         # Remove spacing between entries
         self.entries_layout.setSpacing(0)
         self.entries_layout.setContentsMargins(0, 0, 0, 0)
-        
+        print(self.entries)
+ 
         # Add entries to the sidebar
         for entry in self.entries:
             entry_widget = QWidget()
@@ -343,8 +345,42 @@ Here's my journal entry:
         self.entries_scroll.setObjectName("entriesScroll")
         self.entries_scroll.setContentsMargins(0, 0, 0, 0)
         
+        # Apply stylesheet dynamically
+        self.update_entries_styles(is_dark)
+        
         # Update the sidebar entries widget size
         self.entries_widget.adjustSize()
+
+    def update_entries_styles(self, is_dark):
+        # Force style refresh for all entry widgets
+        app = QApplication.instance()
+        
+        # Refresh entries scroll area
+        self.entries_scroll.style().unpolish(self.entries_scroll)
+        self.entries_scroll.style().polish(self.entries_scroll)
+        
+        # Refresh entries widget
+        self.entries_widget.style().unpolish(self.entries_widget)
+        self.entries_widget.style().polish(self.entries_widget)
+        
+        # Refresh all entry widgets and their children
+        for i in range(self.entries_layout.count()):
+            entry_widget = self.entries_layout.itemAt(i).widget()
+            if entry_widget:
+                entry_widget.style().unpolish(entry_widget)
+                entry_widget.style().polish(entry_widget)
+                
+                # Refresh all children in the entry layout
+                entry_layout = entry_widget.layout()
+                if entry_layout:
+                    for j in range(entry_layout.count()):
+                        child = entry_layout.itemAt(j).widget()
+                        if child:
+                            child.style().unpolish(child)
+                            child.style().polish(child)
+        
+        # Process events to force update
+        app.processEvents()
 
     def show_chat_menu(self):
         menu = QMenu(self.chat_btn)
