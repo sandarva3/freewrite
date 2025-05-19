@@ -1,0 +1,79 @@
+QMainWindow {
+    background-color: #ffffff;
+    font-family: 'Lato-Regular';
+    font-size: 14px;
+}
+
+QTextEdit {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Lato-Regular';
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+}
+
+QTextEdit[dark="true"] {
+    background-color: #000000;
+    color: #e6e6e6;
+}
+
+QPushButton {
+    background-color: transparent;
+    color: #808080;
+    border: none;
+    padding: 8px;
+    font-size: 13px;
+}
+
+QPushButton:hover {
+    color: #000000;
+}
+
+QPushButton[dark="true"] {
+    color: #808080;
+}
+
+QPushButton:hover[dark="true"] {
+    color: #ffffff;
+}
+
+QWidget#bottomNav {
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+QWidget#bottomNav[dark="true"] {
+    background-color: #000000;
+}
+
+QWidget#sidebar {
+    background-color: #ffffff;
+    width: 200px;
+}
+
+QWidget#sidebar[dark="true"] {
+    background-color: #000000;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+QLabel {
+    color: #808080;
+    font-size: 12px;
+}
+
+QLabel:hover {
+    color: #000000;
+}
+
+QLabel[dark="true"] {
+    color: #808080;
+}
+
+QLabel:hover[dark="true"] {
+    color: #ffffff;
+}
