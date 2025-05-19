@@ -1,0 +1,4 @@
+usr/bin/freewrite usr/bin/
+usr/share/applications/freewrite.desktop usr/share/applications/
+usr/share/freewrite/* usr/share/freewrite/
+usr/share/icons/hicolor/*/apps/freewrite.png usr/share/icons/hicolor/*/apps/

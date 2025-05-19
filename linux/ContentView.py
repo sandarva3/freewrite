@@ -71,7 +71,8 @@ class ContentView(QWidget):
             "\n\nWhat's on your mind", "\n\nJust start", "\n\nType your first thought",
             "\n\nStart with one sentence", "\n\nJust say it"
         ]
-        self.documents_directory = os.path.join(os.path.expanduser("~"), "information", "freewrite_notes")
+        self.documents_directory = os.path.join(os.path.expanduser("~"), "freewrite_notes")
+        os.makedirs(self.documents_directory, exist_ok=True)
         self.ai_chat_prompt = """
 below is my journal entry. wyt? talk through it with me like a friend. don't therpaize me and give me a whole breakdown, don't repeat my thoughts with headings. really take all of this, and tell me back stuff truly as if you're an old homie.
 
