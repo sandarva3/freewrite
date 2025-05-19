@@ -108,29 +108,45 @@ Here's my journal entry:
         self.main_layout.addWidget(self.main_widget)
         self.main_v_layout = QVBoxLayout(self.main_widget)
 
-        # Text Editor
+        # Text Editor with proper alignment configuration
         self.text_edit = QTextEdit()
         self.text_edit.setPlainText(self.text)
         self.text_edit.setFont(QFont(self.selected_font, self.font_size))
-        self.text_edit.setLayoutDirection(Qt.LeftToRight)  # Force LTR direction
-        self.text_edit.document().setDefaultTextOption(QTextOption(Qt.AlignLeft))  # Ensure text alignment
+        
+        # Critical fixes for text direction
+        document = self.text_edit.document()
+        option = QTextOption()
+        option.setAlignment(Qt.AlignLeft)
+        option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
+        option.setTextDirection(Qt.LeftToRight)
+        document.setDefaultTextOption(option)
+        self.text_edit.document().setDocumentMargin(0)
+        
+        # Set property for theme
+        is_dark = self.color_scheme == "dark"
+        self.text_edit.setProperty("dark", is_dark)
+        
         self.text_edit.textChanged.connect(self.on_text_changed)
         self.main_v_layout.addWidget(self.text_edit)
 
         # Bottom Navigation
         self.bottom_nav = QWidget()
+        self.bottom_nav.setObjectName("bottomNav")
+        self.bottom_nav.setProperty("dark", is_dark)
         self.bottom_nav_layout = QHBoxLayout(self.bottom_nav)
         self.font_buttons = QWidget()
         self.font_buttons_layout = QHBoxLayout(self.font_buttons)
         
         # Font Size Button
         self.font_size_btn = QPushButton(f"{int(self.font_size)}px")
+        self.font_size_btn.setProperty("dark", is_dark)
         self.font_size_btn.clicked.connect(self.change_font_size)
         self.font_buttons_layout.addWidget(self.font_size_btn)
         
         # Font Buttons
         for font in ["Lato", "Arial", "System", "Serif", "Random"]:
             btn = QPushButton(font)
+            btn.setProperty("dark", is_dark)
             btn.clicked.connect(lambda checked, f=font: self.change_font(f))
             self.font_buttons_layout.addWidget(btn)
         self.bottom_nav_layout.addWidget(self.font_buttons)
@@ -140,26 +156,32 @@ Here's my journal entry:
         self.utility_buttons = QWidget()
         self.utility_buttons_layout = QHBoxLayout(self.utility_buttons)
         self.timer_btn = QPushButton("15:00")
+        self.timer_btn.setProperty("dark", is_dark)
         self.timer_btn.clicked.connect(self.toggle_timer)
         self.utility_buttons_layout.addWidget(self.timer_btn)
         
         self.chat_btn = QPushButton("Chat")
+        self.chat_btn.setProperty("dark", is_dark)
         self.chat_btn.clicked.connect(self.show_chat_menu)
         self.utility_buttons_layout.addWidget(self.chat_btn)
         
         self.fullscreen_btn = QPushButton("Fullscreen")
+        self.fullscreen_btn.setProperty("dark", is_dark)
         self.fullscreen_btn.clicked.connect(self.toggle_fullscreen)
         self.utility_buttons_layout.addWidget(self.fullscreen_btn)
         
         self.new_entry_btn = QPushButton("New Entry")
+        self.new_entry_btn.setProperty("dark", is_dark)
         self.new_entry_btn.clicked.connect(self.create_new_entry)
         self.utility_buttons_layout.addWidget(self.new_entry_btn)
         
         self.theme_toggle_btn = QPushButton("Toggle Theme")
+        self.theme_toggle_btn.setProperty("dark", is_dark)
         self.theme_toggle_btn.clicked.connect(self.toggle_theme)
         self.utility_buttons_layout.addWidget(self.theme_toggle_btn)
         
         self.history_btn = QPushButton("History")
+        self.history_btn.setProperty("dark", is_dark)
         self.history_btn.clicked.connect(self.toggle_sidebar)
         self.utility_buttons_layout.addWidget(self.history_btn)
         
@@ -168,8 +190,11 @@ Here's my journal entry:
 
         # Sidebar
         self.sidebar = QWidget()
+        self.sidebar.setObjectName("sidebar")
+        self.sidebar.setProperty("dark", is_dark)
         self.sidebar_layout = QVBoxLayout(self.sidebar)
         self.history_btn = QPushButton("History")
+        self.history_btn.setProperty("dark", is_dark)
         self.history_btn.clicked.connect(self.open_documents_directory)
         self.sidebar_layout.addWidget(self.history_btn)
         
@@ -264,7 +289,54 @@ Here's my journal entry:
     def toggle_theme(self):
         self.color_scheme = "dark" if self.color_scheme == "light" else "light"
         QSettings("humansongs", "freewrite").setValue("colorScheme", self.color_scheme)
+        
+        # Apply theme to all widgets
+        is_dark = self.color_scheme == "dark"
+        parent = self.parent()
+        # Set property for all widgets
+        if isinstance(parent, QMainWindow):
+                    parent.centralWidget().setProperty("dark", is_dark)
+                    parent.centralWidget().style().unpolish(parent.centralWidget())
+                    parent.centralWidget().style().polish(parent.centralWidget())
+
+        for widget in [self.text_edit, self.bottom_nav, self.sidebar, self.font_size_btn, 
+                      self.timer_btn, self.chat_btn, self.fullscreen_btn, 
+                      self.new_entry_btn, self.theme_toggle_btn, self.history_btn]:
+            if widget:
+                widget.setProperty("dark", is_dark)
+                widget.style().unpolish(widget)
+                widget.style().polish(widget)
+        
+        # Apply to all buttons in font_buttons
+        for i in range(self.font_buttons_layout.count()):
+            widget = self.font_buttons_layout.itemAt(i).widget()
+            if widget:
+                widget.setProperty("dark", is_dark)
+                widget.style().unpolish(widget)
+                widget.style().polish(widget)
+        
+        # Apply to all buttons in utility_buttons
+        for i in range(self.utility_buttons_layout.count()):
+            widget = self.utility_buttons_layout.itemAt(i).widget()
+            if widget:
+                widget.setProperty("dark", is_dark)
+                widget.style().unpolish(widget)
+                widget.style().polish(widget)
+        
+        # Refresh the styles
         self.update_styles()
+
+# Replace the update_styles method
+    def update_styles(self):
+        try:
+            with open("assets/style.qss", "r") as f:
+                style_content = f.read()
+                QApplication.instance().setStyleSheet(style_content)
+            # Force a repaint to ensure styles are applied
+            self.update()
+            self.parent().update()
+        except Exception as e:
+            print(f"Error loading styles: {e}")
 
     def toggle_sidebar(self):
         self.showing_sidebar = not self.showing_sidebar
@@ -464,7 +536,3 @@ Here's my journal entry:
         except Exception as e:
             print(f"Error loading entries: {e}")
             self.create_new_entry()
-
-    def update_styles(self):
-        with open("assets/style.qss", "r") as f:
-            QApplication.instance().setStyleSheet(f.read())

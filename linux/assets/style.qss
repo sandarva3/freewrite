@@ -4,6 +4,20 @@ QMainWindow {
     font-size: 14px;
 }
 
+QMainWindow[dark="true"] {
+    background-color: #000000;
+}
+
+QWidget {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+QWidget[dark="true"] {
+    background-color: #000000;
+    color: #ffffff; /* Pure white text */
+}
+
 QTextEdit {
     background-color: #ffffff;
     color: #333333;
@@ -15,7 +29,7 @@ QTextEdit {
 
 QTextEdit[dark="true"] {
     background-color: #000000;
-    color: #e6e6e6;
+    color: #ffffff; /* Pure white text */
 }
 
 QPushButton {
@@ -71,9 +85,23 @@ QLabel:hover {
 }
 
 QLabel[dark="true"] {
-    color: #808080;
+    color: #ffffff; /* Pure white text */
 }
 
 QLabel:hover[dark="true"] {
-    color: #ffffff;
+    color: #e6e6e6; /* Slightly lighter for hover effect */
+}
+
+QScrollArea[dark="true"] {
+    background-color: #000000;
+}
+
+/* Fix for text direction and enforce horizontal layout */
+QTextEdit::document {
+    text-direction: ltr;
+    layout-direction: ltr;
+}
+
+QTextEdit {
+    qproperty-textOption: QTextOption(Qt.AlignLeft | Qt.AlignAbsolute);
 }

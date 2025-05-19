@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from PyQt5.QtGui import QFontDatabase, QIcon
 from PyQt5.QtCore import QSettings
 from ContentView import ContentView
@@ -19,9 +19,17 @@ class FreewriteApp(QMainWindow):
         font_db = QFontDatabase()
         font_db.addApplicationFont("fonts/Lato-Regular.ttf")
 
-        # Set central widget
+        # Create a full-window widget to manage background
+        self.central_widget = QWidget(self)
+        self.central_widget.setProperty("dark", self.color_scheme == "dark")
+        self.setCentralWidget(self.central_widget)
+
+        # Set ContentView inside the central widget
         self.content_view = ContentView(self)
-        self.setCentralWidget(self.content_view)
+        layout = QVBoxLayout(self.central_widget)
+        layout.addWidget(self.content_view)
+        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins to cover entire window
+        self.central_widget.setLayout(layout)
 
         # Center window
         self.center()
