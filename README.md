@@ -1,6 +1,21 @@
-# hi, this is freewrite
+This is a Linux version of the Freewrite software, originally made by Farza for Mac os.
 
-a simple, open-source debian/linux_app to freewrite. 
+freewrite is a minimalist freewriting software that lets you write with minimal distractions so that you can focus more on your ideas and thoughts.
+
+freewriting is a writing technique, developed around early 1970s by Peter Elbow, which prioritizes just recording your raw consciousness and thoughts into something without worrying about your writing structures.
+
+![image](https://github.com/user-attachments/assets/6f75c564-4c2f-444c-a832-aeec9c4716cd)
+
+
+#Installation
+### Method 1: Direct Download
+1. Download the [latest release .deb file](https://github.com/sandarva3/freewrite/releases/latest)
+2. Install with:    sudo apt install ./freewrite_1.0.0_all.deb
+
+### Method 2: Using wget
+1. Open your terminal and paste this: wget https://github.com/sandarva3/freewrite/releases/download/v1.0.0/freewrite_1.0.0_all.deb
+2. Install with:    sudo apt install ./freewrite_1.0.0_all.deb
+
 
 download latest mac-os-version version [here](https://www.freewrite.io/)
 
