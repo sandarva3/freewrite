@@ -107,12 +107,10 @@ Here's my journal entry:
         self.main_widget = QWidget()
         self.main_layout.addWidget(self.main_widget)
         self.main_v_layout = QVBoxLayout(self.main_widget)
-
         # Text Editor with proper alignment configuration
         self.text_edit = QTextEdit()
         self.text_edit.setPlainText(self.text)
         self.text_edit.setFont(QFont(self.selected_font, self.font_size))
-        
         # Critical fixes for text direction
         document = self.text_edit.document()
         option = QTextOption()
@@ -120,14 +118,13 @@ Here's my journal entry:
         option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
         option.setTextDirection(Qt.LeftToRight)
         document.setDefaultTextOption(option)
-        
         # Set property for theme
         is_dark = self.color_scheme == "dark"
         if hasattr(self, 'parent') and self.parent() is not None:
             self.parent().setProperty("dark", is_dark)
         self.text_edit.setProperty("dark", is_dark)
-        
         self.text_edit.textChanged.connect(self.on_text_changed)
+        self.fix_text_direction()
         self.main_v_layout.addWidget(self.text_edit)
 
         # Bottom Navigation
@@ -231,6 +228,18 @@ Here's my journal entry:
         if current_position < 2:
             cursor.setPosition(2)
             self.text_edit.setTextCursor(cursor)
+
+    def keyPressEvent(self, event):
+        """Override keyPressEvent to prevent deleting the initial \\n\\n"""
+        cursor = self.text_edit.textCursor()
+        current_position = cursor.position()
+        
+        # Prevent backspace from deleting the initial \n\n
+        if event.key() == Qt.Key_Backspace and current_position <= 2:
+            return  # Do nothing, prevent the backspace
+        
+        # Let the parent handle other key events
+        super().keyPressEvent(event)
 
     def change_font_size(self):
         current_index = self.font_sizes.index(self.font_size)
@@ -358,13 +367,40 @@ Here's my journal entry:
     def open_documents_directory(self):
         QDesktopServices.openUrl(QUrl.fromLocalFile(self.documents_directory))
 
+
+    def fix_text_direction(self):
+        """Fix text direction to ensure horizontal writing"""
+        cursor = self.text_edit.textCursor()
+        # Set text direction explicitly
+        format = cursor.charFormat()
+        cursor.select(QTextCursor.Document)
+        cursor.setCharFormat(format)
+        # Ensure document options are correct
+        document = self.text_edit.document()
+        option = QTextOption()
+        option.setAlignment(Qt.AlignLeft)
+        option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
+        option.setTextDirection(Qt.LeftToRight)
+        document.setDefaultTextOption(option)
+    # Force layout direction
+        self.text_edit.setLayoutDirection(Qt.LeftToRight)
+
     def on_text_changed(self):
+        """Handle text changes and ensure proper formatting"""
         text = self.text_edit.toPlainText()
+        cursor_position = self.text_edit.textCursor().position()
         # Only prepend \n\n if the text doesn't already start with it
         if not text.startswith("\n\n") and text.strip():
             text = "\n\n" + text.lstrip("\n")
             self.text_edit.blockSignals(True)  # Prevent recursive signals
             self.text_edit.setPlainText(text)
+            # Restore cursor position (adjust for added characters)
+            cursor = self.text_edit.textCursor()
+            new_position = max(2, cursor_position + 2)
+            cursor.setPosition(min(new_position, len(text)))
+            self.text_edit.setTextCursor(cursor)
+            # Fix text direction after text change
+            self.fix_text_direction()
             self.text_edit.blockSignals(False)
         self.text = text
         self.save_current_entry()
