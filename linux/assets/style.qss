@@ -97,3 +97,40 @@ QWidget[dark="true"] {
 QTextEdit::document {
     text-direction: ltr;
 }
+
+/* Dark theme styles for entry items */
+#entriesContainer[dark="true"], #entriesScroll[dark="true"] {
+    background-color: #121212;
+    border: none;
+}
+
+#entryItem[dark="true"] {
+    background-color: #121212;
+    color: white;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+QScrollArea[dark="true"], QScrollArea[dark="true"] > QWidget, 
+QScrollArea[dark="true"] > QWidget > QWidget {
+    background-color: #121212;
+    border: none;
+}
+
+/* Style for scrollbars in dark mode */
+QScrollBar:vertical[dark="true"] {
+    background: #1e1e1e;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical[dark="true"] {
+    background: #444;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical[dark="true"], 
+QScrollBar::sub-line:vertical[dark="true"] {
+    height: 0px;
+}

@@ -291,35 +291,60 @@ Here's my journal entry:
             child = self.entries_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+        
         # Check current theme
         is_dark = self.color_scheme == "dark"
+        
+        # Remove spacing between entries
+        self.entries_layout.setSpacing(0)
+        self.entries_layout.setContentsMargins(0, 0, 0, 0)
+        
         # Add entries to the sidebar
         for entry in self.entries:
             entry_widget = QWidget()
             entry_widget.setProperty("dark", is_dark)
+            entry_widget.setObjectName("entryItem")  # Add an object name for styling
+            
             entry_layout = QHBoxLayout(entry_widget)
+            entry_layout.setContentsMargins(8, 2, 8, 2)  # Reduce internal margins
+            
             # Entry title/preview
             label = QLabel(f"{entry.date}: {entry.preview_text}")
             label.setProperty("dark", is_dark)
             label.setWordWrap(True)
             entry_layout.addWidget(label, 1)
+            
             # Delete button
             delete_btn = QPushButton("🗑️")
             delete_btn.setProperty("dark", is_dark)
             delete_btn.setMaximumWidth(30)
             delete_btn.clicked.connect(lambda checked, e=entry: self.delete_entry(e))
             entry_layout.addWidget(delete_btn)
+            
             # Export button
             export_btn = QPushButton("📤")
             export_btn.setProperty("dark", is_dark)
             export_btn.setMaximumWidth(30)
             export_btn.clicked.connect(lambda checked, e=entry: self.export_entry_as_pdf(e))
             entry_layout.addWidget(export_btn)
+            
             self.entries_layout.addWidget(entry_widget)
+            
             # Make entry clickable to load
             entry_widget.mousePressEvent = lambda event, e=entry: self.select_entry(e)
+        
+        # Set background for entries widget to match theme
+        self.entries_widget.setProperty("dark", is_dark)
+        self.entries_widget.setObjectName("entriesContainer")
+        self.entries_widget.setContentsMargins(0, 0, 0, 0)
+        
+        # Also set properties for the scroll area
+        self.entries_scroll.setProperty("dark", is_dark)
+        self.entries_scroll.setObjectName("entriesScroll")
+        self.entries_scroll.setContentsMargins(0, 0, 0, 0)
+        
         # Update the sidebar entries widget size
-            self.entries_widget.adjustSize()
+        self.entries_widget.adjustSize()
 
     def show_chat_menu(self):
         menu = QMenu(self.chat_btn)
@@ -353,7 +378,20 @@ Here's my journal entry:
             self.parent().showNormal()
         self.fullscreen_btn.setText("Minimize" if self.is_fullscreen else "Fullscreen")
 
+    
+
+
+    def restore_font_size_on_toggle(self, font_size_before_toggle):
+        current_index = self.font_sizes.index(self.font_size)
+        self.font_size = self.font_sizes[(current_index + 1) % len(self.font_sizes)]
+        self.font_size_btn.setText(f"{int(self.font_size)}px")
+        self.text_edit.setFont(QFont(self.selected_font, self.font_size))
+
+
     def toggle_theme(self):
+        # Store current font size before theme change
+        current_font_size = self.font_size
+        
         self.color_scheme = "dark" if self.color_scheme == "light" else "light"
         QSettings("humansongs", "freewrite").setValue("colorScheme", self.color_scheme)
         
@@ -407,6 +445,11 @@ Here's my journal entry:
                         child_widget.setProperty("dark", is_dark)
                         child_widget.style().unpolish(child_widget)
                         child_widget.style().polish(child_widget)
+        
+        # Restore font size
+        self.restore_font_size_on_toggle(current_font_size)
+        self.font_size_btn.setText(f"{int(self.font_size)}px")
+        self.text_edit.setFont(QFont(self.selected_font, self.font_size))
         
         # Refresh the styles
         self.update_styles()
