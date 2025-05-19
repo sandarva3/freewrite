@@ -6,7 +6,7 @@ freewrite is a minimalist freewriting software that lets you write with minimal 
 ![image](https://github.com/user-attachments/assets/239353da-6cc5-493e-b33d-7fff6ec4b5d1)
 
 
-#Installation
+# Installation
 ### Method 1: Direct Download
 1. Download the [latest release .deb file](https://github.com/sandarva3/freewrite/releases/latest)
 2. Install with:    sudo apt install ./freewrite_1.0.0_all.deb
