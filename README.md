@@ -3,7 +3,7 @@ This is a Linux version of the Freewrite software, originally made by Farza for 
 freewrite is a minimalist freewriting software that lets you write with minimal distractions so that you can focus more on your ideas and thoughts.
 
 
-![image](https://github.com/user-attachments/assets/6f75c564-4c2f-444c-a832-aeec9c4716cd)
+![image](https://github.com/user-attachments/assets/239353da-6cc5-493e-b33d-7fff6ec4b5d1)
 
 
 #Installation
