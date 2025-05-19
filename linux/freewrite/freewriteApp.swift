@@ -1,48 +1,24 @@
-//
-//  freewriteApp.swift
-//  freewrite
-//
-//  Created by thorfinn on 2/14/25.
-//
+import SwiftGTK
 
-import SwiftUI
+class FreewriteApp {
+    let window: Window
+    let contentView: ContentView
 
-@main
-struct freewriteApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @AppStorage("colorScheme") private var colorSchemeString: String = "light"
-    
     init() {
-        // Register Lato font
-        if let fontURL = Bundle.main.url(forResource: "Lato-Regular", withExtension: "ttf") {
-            CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, nil)
-        }
+        Gtk.init()
+        window = Window()
+        window.title = "Freewrite"
+        window.setDefaultSize(width: 1100, height: 600)
+        window.onDestroy { Gtk.mainQuit() }
+
+        contentView = ContentView()
+        window.add(contentView.container)
+        window.showAll()
     }
-     
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .toolbar(.hidden, for: .windowToolbar)
-                .preferredColorScheme(colorSchemeString == "dark" ? .dark : .light)
-        }
-        .windowStyle(.hiddenTitleBar)
-        .defaultSize(width: 1100, height: 600)
-        .windowToolbarStyle(.unifiedCompact)
-        .windowResizability(.contentSize)
+
+    func run() {
+        Gtk.main()
     }
 }
 
-// Add AppDelegate to handle window configuration
-class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        if let window = NSApplication.shared.windows.first {
-            // Ensure window starts in windowed mode
-            if window.styleMask.contains(.fullScreen) {
-                window.toggleFullScreen(nil)
-            }
-            
-            // Center the window on the screen
-            window.center()
-        }
-    }
-} 
+_ = FreewriteApp().run()
