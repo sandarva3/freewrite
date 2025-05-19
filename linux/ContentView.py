@@ -291,33 +291,34 @@ Here's my journal entry:
             child = self.entries_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
-        
+        # Check current theme
+        is_dark = self.color_scheme == "dark"
         # Add entries to the sidebar
         for entry in self.entries:
             entry_widget = QWidget()
+            entry_widget.setProperty("dark", is_dark)
             entry_layout = QHBoxLayout(entry_widget)
-            
             # Entry title/preview
             label = QLabel(f"{entry.date}: {entry.preview_text}")
+            label.setProperty("dark", is_dark)
             label.setWordWrap(True)
             entry_layout.addWidget(label, 1)
-            
             # Delete button
             delete_btn = QPushButton("🗑️")
+            delete_btn.setProperty("dark", is_dark)
             delete_btn.setMaximumWidth(30)
             delete_btn.clicked.connect(lambda checked, e=entry: self.delete_entry(e))
             entry_layout.addWidget(delete_btn)
-            
             # Export button
             export_btn = QPushButton("📤")
+            export_btn.setProperty("dark", is_dark)
             export_btn.setMaximumWidth(30)
             export_btn.clicked.connect(lambda checked, e=entry: self.export_entry_as_pdf(e))
             entry_layout.addWidget(export_btn)
-            
             self.entries_layout.addWidget(entry_widget)
             # Make entry clickable to load
             entry_widget.mousePressEvent = lambda event, e=entry: self.select_entry(e)
-    # Update the sidebar entries widget size
+        # Update the sidebar entries widget size
             self.entries_widget.adjustSize()
 
     def show_chat_menu(self):
@@ -390,8 +391,28 @@ Here's my journal entry:
                 widget.style().unpolish(widget)
                 widget.style().polish(widget)
         
+        # Apply to all widgets in entries_layout
+        for i in range(self.entries_layout.count()):
+            entry_widget = self.entries_layout.itemAt(i).widget()
+            if entry_widget:
+                entry_widget.setProperty("dark", is_dark)
+                entry_widget.style().unpolish(entry_widget)
+                entry_widget.style().polish(entry_widget)
+                
+                # Apply to child widgets in the entry
+                entry_layout = entry_widget.layout()
+                for j in range(entry_layout.count()):
+                    child_widget = entry_layout.itemAt(j).widget()
+                    if child_widget:
+                        child_widget.setProperty("dark", is_dark)
+                        child_widget.style().unpolish(child_widget)
+                        child_widget.style().polish(child_widget)
+        
         # Refresh the styles
         self.update_styles()
+        
+        # Update entries display to ensure new widgets have the theme
+        self.update_entries_display()
 
 # Replace the update_styles method
     def update_styles(self):
