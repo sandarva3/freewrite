@@ -120,10 +120,11 @@ Here's my journal entry:
         option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
         option.setTextDirection(Qt.LeftToRight)
         document.setDefaultTextOption(option)
-        self.text_edit.document().setDocumentMargin(0)
         
         # Set property for theme
         is_dark = self.color_scheme == "dark"
+        if hasattr(self, 'parent') and self.parent() is not None:
+            self.parent().setProperty("dark", is_dark)
         self.text_edit.setProperty("dark", is_dark)
         
         self.text_edit.textChanged.connect(self.on_text_changed)
@@ -151,6 +152,9 @@ Here's my journal entry:
             self.font_buttons_layout.addWidget(btn)
         self.bottom_nav_layout.addWidget(self.font_buttons)
         self.bottom_nav_layout.addStretch()
+        
+        #ensure that cursor doesn't move above third ine
+        self.text_edit.cursorPositionChanged.connect(self.enforce_minimum_cursor_position)
 
         # Utility Buttons
         self.utility_buttons = QWidget()
@@ -216,6 +220,17 @@ Here's my journal entry:
         self.save_timer = QTimer()
         self.save_timer.timeout.connect(self.save_current_entry)
         self.save_timer.start(1000)
+
+
+    def enforce_minimum_cursor_position(self):
+        """Ensure cursor never goes above the third line (after the two newlines)"""
+        cursor = self.text_edit.textCursor()
+        current_position = cursor.position()
+    
+        # Minimum position is after the initial "\n\n" (position 2)
+        if current_position < 2:
+            cursor.setPosition(2)
+            self.text_edit.setTextCursor(cursor)
 
     def change_font_size(self):
         current_index = self.font_sizes.index(self.font_size)
@@ -292,13 +307,14 @@ Here's my journal entry:
         
         # Apply theme to all widgets
         is_dark = self.color_scheme == "dark"
-        parent = self.parent()
+        
+        # Apply property to parent main window
+        if hasattr(self, 'parent') and self.parent() is not None:
+            self.parent().setProperty("dark", is_dark)
+            self.parent().style().unpolish(self.parent())
+            self.parent().style().polish(self.parent())
+        
         # Set property for all widgets
-        if isinstance(parent, QMainWindow):
-                    parent.centralWidget().setProperty("dark", is_dark)
-                    parent.centralWidget().style().unpolish(parent.centralWidget())
-                    parent.centralWidget().style().polish(parent.centralWidget())
-
         for widget in [self.text_edit, self.bottom_nav, self.sidebar, self.font_size_btn, 
                       self.timer_btn, self.chat_btn, self.fullscreen_btn, 
                       self.new_entry_btn, self.theme_toggle_btn, self.history_btn]:
@@ -332,9 +348,6 @@ Here's my journal entry:
             with open("assets/style.qss", "r") as f:
                 style_content = f.read()
                 QApplication.instance().setStyleSheet(style_content)
-            # Force a repaint to ensure styles are applied
-            self.update()
-            self.parent().update()
         except Exception as e:
             print(f"Error loading styles: {e}")
 

@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QFontDatabase, QIcon
 from PyQt5.QtCore import QSettings
 from ContentView import ContentView
@@ -14,22 +14,17 @@ class FreewriteApp(QMainWindow):
         # Load color scheme from settings
         settings = QSettings("humansongs", "freewrite")
         self.color_scheme = settings.value("colorScheme", "light")
+        
+        # Set the dark property based on current scheme
+        self.setProperty("dark", self.color_scheme == "dark")
 
         # Load fonts
         font_db = QFontDatabase()
         font_db.addApplicationFont("fonts/Lato-Regular.ttf")
 
-        # Create a full-window widget to manage background
-        self.central_widget = QWidget(self)
-        self.central_widget.setProperty("dark", self.color_scheme == "dark")
-        self.setCentralWidget(self.central_widget)
-
-        # Set ContentView inside the central widget
+        # Set central widget
         self.content_view = ContentView(self)
-        layout = QVBoxLayout(self.central_widget)
-        layout.addWidget(self.content_view)
-        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins to cover entire window
-        self.central_widget.setLayout(layout)
+        self.setCentralWidget(self.content_view)
 
         # Center window
         self.center()
