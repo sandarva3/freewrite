@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QLocale, QLibraryInfo  # Add QLocale import
+from PyQt5.QtCore import QLocale# Add QLocale import
 from freewriteApp import FreewriteApp
 
 if __name__ == "__main__":

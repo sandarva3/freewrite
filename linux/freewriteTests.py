@@ -1,13 +1,13 @@
 import unittest
 import os
 import sys
-from PyQt5.QtWidgets import QApplication  # ✅ Use PyQt5
+from PyQt5.QtWidgets import QApplication  #Use PyQt5
 from ContentView import HumanEntry, ContentView
 
 class FreewriteTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QApplication(sys.argv)  # ✅ Needed before any QWidget
+        cls.app = QApplication(sys.argv)  #Needed before any QWidget
 
     def setUp(self):
         self.view = ContentView()

@@ -4,16 +4,13 @@ import re
 import random  # Added for random placeholder selection
 from datetime import datetime, date
 from PyQt5.QtWidgets import (
-    QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QPushButton,
+    QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QPushButton,
     QScrollArea, QLabel, QMenu, QFileDialog
 )
-from PyQt5.QtGui import QFont, QIcon, QTextCursor, QPainter, QTextDocument, QTextOption  # Added QTextOption
-from PyQt5.QtCore import Qt, QTimer, QSettings, QUrl, QSize
+from PyQt5.QtGui import QFont, QTextCursor, QTextDocument, QTextOption  # Added QTextOption
+from PyQt5.QtCore import Qt, QTimer, QSettings, QUrl
 from PyQt5.Qt import QDesktopServices
 from PyQt5.QtWidgets import QApplication
-import markdown
-import PyPDF2
-from PyPDF2 import PdfWriter
 
 class HumanEntry:
     def __init__(self, id, date, filename, preview_text):
