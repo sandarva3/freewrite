@@ -382,16 +382,13 @@ Here's my journal entry:
 
 
     def restore_font_size_on_toggle(self, font_size_before_toggle):
-        current_index = self.font_sizes.index(self.font_size)
-        self.font_size = self.font_sizes[(current_index + 1) % len(self.font_sizes)]
-        self.font_size_btn.setText(f"{int(self.font_size)}px")
-        self.text_edit.setFont(QFont(self.selected_font, self.font_size))
+        self.font_size_btn.setText(f"{font_size_before_toggle}px")
+        self.text_edit.setFont(QFont(self.selected_font, font_size_before_toggle))
 
 
     def toggle_theme(self):
         # Store current font size before theme change
-        current_font_size = self.font_size
-        
+        current_font_size = int(self.font_size)
         self.color_scheme = "dark" if self.color_scheme == "light" else "light"
         QSettings("humansongs", "freewrite").setValue("colorScheme", self.color_scheme)
         
@@ -446,16 +443,15 @@ Here's my journal entry:
                         child_widget.style().unpolish(child_widget)
                         child_widget.style().polish(child_widget)
         
-        # Restore font size
-        self.restore_font_size_on_toggle(current_font_size)
-        self.font_size_btn.setText(f"{int(self.font_size)}px")
-        self.text_edit.setFont(QFont(self.selected_font, self.font_size))
-        
         # Refresh the styles
         self.update_styles()
         
+        # Restore font size
+        self.restore_font_size_on_toggle(current_font_size)
+
         # Update entries display to ensure new widgets have the theme
         self.update_entries_display()
+
 
 # Replace the update_styles method
     def update_styles(self):
