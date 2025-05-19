@@ -1,0 +1,7 @@
+setup.py
+freewrite.egg-info/PKG-INFO
+freewrite.egg-info/SOURCES.txt
+freewrite.egg-info/dependency_links.txt
+freewrite.egg-info/entry_points.txt
+freewrite.egg-info/requires.txt
+freewrite.egg-info/top_level.txt

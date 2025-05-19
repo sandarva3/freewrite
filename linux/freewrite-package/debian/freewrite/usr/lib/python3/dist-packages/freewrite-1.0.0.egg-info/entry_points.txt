@@ -1,0 +1,2 @@
+[console_scripts]
+freewrite = freewrite.main:main

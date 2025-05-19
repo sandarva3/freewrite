@@ -1,0 +1,136 @@
+
+QMainWindow {
+    background-color: #ffffff;
+    font-family: 'Lato-Regular';
+    font-size: 14px;
+}
+
+QMainWindow[dark="true"] {
+    background-color: #000000;
+}
+
+QTextEdit {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Lato-Regular';
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+}
+
+QTextEdit[dark="true"] {
+    background-color: #000000;
+    color: #e6e6e6;
+}
+
+QPushButton {
+    background-color: transparent;
+    color: #808080;
+    border: none;
+    padding: 8px;
+    font-size: 13px;
+}
+
+QPushButton:hover {
+    color: #000000;
+}
+
+QPushButton[dark="true"] {
+    color: #808080;
+}
+
+QPushButton:hover[dark="true"] {
+    color: #ffffff;
+}
+
+QWidget#bottomNav {
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+QWidget#bottomNav[dark="true"] {
+    background-color: #000000;
+}
+
+QWidget#sidebar {
+    background-color: #ffffff;
+    width: 200px;
+}
+
+QWidget#sidebar[dark="true"] {
+    background-color: #000000;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+QLabel {
+    color: #808080;
+    font-size: 12px;
+}
+
+QLabel:hover {
+    color: #000000;
+}
+
+QLabel[dark="true"] {
+    color: #808080;
+}
+
+QLabel:hover[dark="true"] {
+    color: #ffffff;
+}
+
+/* Additional rules to ensure complete theme coverage */
+QScrollArea[dark="true"] {
+    background-color: #000000;
+}
+
+QWidget[dark="true"] {
+    background-color: #000000;
+    color: #e6e6e6;
+}
+
+/* Fix for text direction */
+QTextEdit::document {
+    text-direction: ltr;
+}
+
+/* Dark theme styles for entry items */
+#entriesContainer[dark="true"], #entriesScroll[dark="true"] {
+    background-color: #121212;
+    border: none;
+}
+
+#entryItem[dark="true"] {
+    background-color: #121212;
+    color: white;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+QScrollArea[dark="true"], QScrollArea[dark="true"] > QWidget, 
+QScrollArea[dark="true"] > QWidget > QWidget {
+    background-color: #121212;
+    border: none;
+}
+
+/* Style for scrollbars in dark mode */
+QScrollBar:vertical[dark="true"] {
+    background: #1e1e1e;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical[dark="true"] {
+    background: #444;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical[dark="true"], 
+QScrollBar::sub-line:vertical[dark="true"] {
+    height: 0px;
+}
