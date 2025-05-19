@@ -1,15 +1,16 @@
 import os
 import uuid
 import re
+import random  # Added for random placeholder selection
 from datetime import datetime, date
 from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QPushButton,
     QScrollArea, QLabel, QMenu, QFileDialog
 )
-from PyQt5.QtGui import QFont, QIcon, QTextCursor, QPainter, QTextDocument
+from PyQt5.QtGui import QFont, QIcon, QTextCursor, QPainter, QTextDocument, QTextOption  # Added QTextOption
 from PyQt5.QtCore import Qt, QTimer, QSettings, QUrl, QSize
-from PyQt5.QtCore import QCoreApplication
 from PyQt5.Qt import QDesktopServices
+from PyQt5.QtWidgets import QApplication
 import markdown
 import PyPDF2
 from PyPDF2 import PdfWriter
@@ -111,6 +112,8 @@ Here's my journal entry:
         self.text_edit = QTextEdit()
         self.text_edit.setPlainText(self.text)
         self.text_edit.setFont(QFont(self.selected_font, self.font_size))
+        self.text_edit.setLayoutDirection(Qt.LeftToRight)  # Force LTR direction
+        self.text_edit.document().setDefaultTextOption(QTextOption(Qt.AlignLeft))  # Ensure text alignment
         self.text_edit.textChanged.connect(self.on_text_changed)
         self.main_v_layout.addWidget(self.text_edit)
 
@@ -197,7 +200,7 @@ Here's my journal entry:
 
     def change_font(self, font):
         if font == "Random":
-            self.selected_font = self.available_fonts[QCoreApplication.instance().random() % len(self.available_fonts)]
+            self.selected_font = self.available_fonts[random.randint(0, len(self.available_fonts) - 1)]
             self.current_random_font = self.selected_font
         else:
             self.selected_font = {"Lato": "Lato-Regular", "Arial": "Arial", "System": "Arial", "Serif": "Times New Roman"}[font]
@@ -229,16 +232,21 @@ Here's my journal entry:
     def show_chat_menu(self):
         menu = QMenu(self.chat_btn)
         trimmed_text = self.text_edit.toPlainText().strip()
+        print(f"Trimmed text length: {len(trimmed_text)}")
         gpt_full_text = self.ai_chat_prompt + "\n\n" + trimmed_text
         claude_full_text = self.claude_prompt + "\n\n" + trimmed_text
         gpt_url_length = len("https://chat.openai.com/?m=" + gpt_full_text)
         claude_url_length = len("https://claude.ai/new?q=" + claude_full_text)
+        print(f"GPT URL length: {gpt_url_length}, Claude URL length: {claude_url_length}")
         
         if gpt_url_length > 6000 or claude_url_length > 6000:
+            print("Adding 'Copy Prompt' action due to long URL")
             menu.addAction("Copy Prompt", self.copy_prompt_to_clipboard)
         elif len(trimmed_text) < 350:
+            print("Adding 'Write more first' action due to short text")
             menu.addAction("Write more first")
         else:
+            print("Adding ChatGPT, Claude, and Copy Prompt actions")
             menu.addAction("ChatGPT", self.open_chat_gpt)
             menu.addAction("Claude", self.open_claude)
             menu.addAction("Copy Prompt", self.copy_prompt_to_clipboard)
@@ -246,7 +254,11 @@ Here's my journal entry:
 
     def toggle_fullscreen(self):
         self.is_fullscreen = not self.is_fullscreen
-        self.showFullScreen() if self.is_fullscreen else self.showNormal()
+        # Call showFullScreen/showNormal on the parent QMainWindow
+        if self.is_fullscreen:
+            self.parent().showFullScreen()
+        else:
+            self.parent().showNormal()
         self.fullscreen_btn.setText("Minimize" if self.is_fullscreen else "Fullscreen")
 
     def toggle_theme(self):
@@ -263,9 +275,12 @@ Here's my journal entry:
 
     def on_text_changed(self):
         text = self.text_edit.toPlainText()
-        if not text.startswith("\n\n"):
+        # Only prepend \n\n if the text doesn't already start with it
+        if not text.startswith("\n\n") and text.strip():
             text = "\n\n" + text.lstrip("\n")
+            self.text_edit.blockSignals(True)  # Prevent recursive signals
             self.text_edit.setPlainText(text)
+            self.text_edit.blockSignals(False)
         self.text = text
         self.save_current_entry()
 
@@ -292,6 +307,9 @@ Here's my journal entry:
                 with open(file_path, "r", encoding="utf-8") as f:
                     self.text = f.read()
                     self.text_edit.setPlainText(self.text)
+                    cursor = self.text_edit.textCursor()
+                    cursor.movePosition(QTextCursor.End)
+                    self.text_edit.setTextCursor(cursor)
         except Exception as e:
             print(f"Error loading entry: {e}")
 
@@ -309,9 +327,12 @@ Here's my journal entry:
             self.update_preview_text(new_entry)
         else:
             self.text = "\n\n"
-            self.placeholder_text = self.placeholder_options[QCoreApplication.instance().random() % len(self.placeholder_options)]
+            self.placeholder_text = random.choice(self.placeholder_options)
             self.save_entry(new_entry)
         self.text_edit.setPlainText(self.text)
+        cursor = self.text_edit.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        self.text_edit.setTextCursor(cursor)
 
     def update_preview_text(self, entry):
         file_path = os.path.join(self.documents_directory, entry.filename)
@@ -446,4 +467,4 @@ Here's my journal entry:
 
     def update_styles(self):
         with open("assets/style.qss", "r") as f:
-            QCoreApplication.instance().setStyleSheet(f.read())
+            QApplication.instance().setStyleSheet(f.read())
