@@ -2,7 +2,6 @@ This is a Linux version of the Freewrite software, originally made by Farza for 
 
 freewrite is a minimalist freewriting software that lets you write with minimal distractions so that you can focus more on your ideas and thoughts.
 
-freewriting is a writing technique, developed around early 1970s by Peter Elbow, which prioritizes just recording your raw consciousness and thoughts into something without worrying about your writing structures.
 
 ![image](https://github.com/user-attachments/assets/6f75c564-4c2f-444c-a832-aeec9c4716cd)
 
