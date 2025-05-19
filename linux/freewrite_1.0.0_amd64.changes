@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Mon, 19 May 2025 12:00:00 +0000
+Source: freewrite
+Binary: freewrite
+Built-For-Profiles: noudeb
+Architecture: all
+Version: 1.0.0
+Distribution: unstable
+Urgency: medium
+Maintainer: Sandarva Paudel, sandarvapoudel182@gmail.com
+Changed-By: Your Name <your.email@example.com>
+Description:
+ freewrite  - Distraction-free writing application
+Changes:
+ freewrite (1.0.0) unstable; urgency=medium
+ .
+   * Initial release.
+Checksums-Sha1:
+ 55c08edafb98931e69b189ca0c508b846f6426db 270584 freewrite_1.0.0_all.deb
+ ea3d5d7b8426784a0aa791aa23d882534fc48e5e 6942 freewrite_1.0.0_amd64.buildinfo
+Checksums-Sha256:
+ 5afb6bb872c4cc539ce22ee5c6faecd2c09c445836bae945e0734bab12411db9 270584 freewrite_1.0.0_all.deb
+ d38467ac9b2fc3d56042f44b5637603b4a3204d1a8cdaa02df6bbb6b21d5dfcd 6942 freewrite_1.0.0_amd64.buildinfo
+Files:
+ 69ad7e4aa65f3ac15ba6128d1d603b8a 270584 editors optional freewrite_1.0.0_all.deb
+ 8f85d30ced579f5e8193a4b9279eaa47 6942 editors optional freewrite_1.0.0_amd64.buildinfo

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Freewrite
+Comment=Distraction-free writing application
+Exec=freewrite
+Icon=freewrite
+Terminal=false
+Type=Application
+Categories=Office;WordProcessor;
+Keywords=Text;Editor;Write;
