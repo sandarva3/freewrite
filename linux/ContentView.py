@@ -278,6 +278,48 @@ Here's my journal entry:
             seconds = self.time_remaining % 60
             self.timer_btn.setText(f"{minutes}:{seconds:02d}")
 
+    def select_entry(self, entry):
+        if self.selected_entry_id:
+            self.save_current_entry()
+        self.selected_entry_id = entry.id
+        self.load_entry(entry)
+
+
+    def update_entries_display(self):
+        # Clear existing widgets
+        while self.entries_layout.count():
+            child = self.entries_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+        
+        # Add entries to the sidebar
+        for entry in self.entries:
+            entry_widget = QWidget()
+            entry_layout = QHBoxLayout(entry_widget)
+            
+            # Entry title/preview
+            label = QLabel(f"{entry.date}: {entry.preview_text}")
+            label.setWordWrap(True)
+            entry_layout.addWidget(label, 1)
+            
+            # Delete button
+            delete_btn = QPushButton("🗑️")
+            delete_btn.setMaximumWidth(30)
+            delete_btn.clicked.connect(lambda checked, e=entry: self.delete_entry(e))
+            entry_layout.addWidget(delete_btn)
+            
+            # Export button
+            export_btn = QPushButton("📤")
+            export_btn.setMaximumWidth(30)
+            export_btn.clicked.connect(lambda checked, e=entry: self.export_entry_as_pdf(e))
+            entry_layout.addWidget(export_btn)
+            
+            self.entries_layout.addWidget(entry_widget)
+            # Make entry clickable to load
+            entry_widget.mousePressEvent = lambda event, e=entry: self.select_entry(e)
+    # Update the sidebar entries widget size
+            self.entries_widget.adjustSize()
+
     def show_chat_menu(self):
         menu = QMenu(self.chat_btn)
         trimmed_text = self.text_edit.toPlainText().strip()
@@ -454,6 +496,7 @@ Here's my journal entry:
         cursor = self.text_edit.textCursor()
         cursor.movePosition(QTextCursor.End)
         self.text_edit.setTextCursor(cursor)
+        self.update_entries_display()
 
     def update_preview_text(self, entry):
         file_path = os.path.join(self.documents_directory, entry.filename)
@@ -495,6 +538,7 @@ Here's my journal entry:
                     self.load_entry(self.entries[0])
                 else:
                     self.create_new_entry()
+            self.update_entries_display()
         except Exception as e:
             print(f"Error deleting entry: {e}")
 
@@ -582,6 +626,7 @@ Here's my journal entry:
                         self.selected_entry_id = self.entries[0].id
                         self.load_entry(self.entries[0])
                         break
+            self.update_entries_display()
         except Exception as e:
             print(f"Error loading entries: {e}")
             self.create_new_entry()
