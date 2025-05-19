@@ -2,7 +2,7 @@ Package: freewrite
 Version: 1.0.0
 Architecture: all
 Maintainer: Sandarva Paudel, sandarvapoudel182@gmail.com
-Installed-Size: 814
+Installed-Size: 815
 Depends: python3-pyqt5, python3:any
 Section: editors
 Priority: optional

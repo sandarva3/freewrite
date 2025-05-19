@@ -4,14 +4,14 @@ Binary: freewrite
 Architecture: all
 Version: 1.0.0
 Checksums-Md5:
- 1076cc1395f6f11c10e1263f6ec94059 270656 freewrite_1.0.0_all.deb
+ e3ba5c3d3afb3f19baefdd7deced8e6e 270660 freewrite_1.0.0_all.deb
 Checksums-Sha1:
- f75e06493aa5b2aebc36952e2e25997b62e131de 270656 freewrite_1.0.0_all.deb
+ a20a9ec04b6c809cc78f4aecdc2e176a762f91fd 270660 freewrite_1.0.0_all.deb
 Checksums-Sha256:
- 8a1bb06b00290610011c236b405c015c3ec2c8daf7dccf63fb4c94d803348486 270656 freewrite_1.0.0_all.deb
+ 159faad66da1625adc56014b6525c8286096f883d875bd1f08fc8097b3e60dbc 270660 freewrite_1.0.0_all.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Mon, 19 May 2025 21:25:15 +0545
+Build-Date: Mon, 19 May 2025 21:46:15 +0545
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
  usr-local-has-programs

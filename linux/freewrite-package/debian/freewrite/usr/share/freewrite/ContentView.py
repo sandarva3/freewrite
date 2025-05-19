@@ -629,22 +629,31 @@ Here's my journal entry:
         except Exception as e:
             print(f"Error deleting entry: {e}")
 
+
+
     def export_entry_as_pdf(self, entry):
+        content = None
         if self.selected_entry_id == entry.id:
             self.save_entry(entry)
         file_path = os.path.join(self.documents_directory, entry.filename)
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
+            # Get proper filename from entry
             suggested_filename = self.extract_title_from_content(content, entry.date) + ".pdf"
-            file_dialog = QFileDialog()
-            file_dialog.setDefaultSuffix("pdf")
+            # Use home directory as safe default
+            home_dir = os.path.expanduser("~")
+            file_dialog = QFileDialog(self, "Save PDF As", home_dir, "PDF Files (*.pdf)")
+            file_dialog.setAcceptMode(QFileDialog.AcceptSave)
             file_dialog.selectFile(suggested_filename)
             if file_dialog.exec_():
                 pdf_path = file_dialog.selectedFiles()[0]
                 self.create_pdf_from_text(content, pdf_path)
         except Exception as e:
             print(f"Error exporting PDF: {e}")
+
+
+
 
     def extract_title_from_content(self, content, date):
         trimmed = content.strip()

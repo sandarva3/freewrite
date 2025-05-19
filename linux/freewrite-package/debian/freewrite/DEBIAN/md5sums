@@ -4,10 +4,10 @@ c1dde2d596058caba2f36709faf5b677  usr/lib/python3/dist-packages/freewrite-1.0.0.
 f5b6805c4491ceb7521d6c6c01e023d8  usr/lib/python3/dist-packages/freewrite-1.0.0.egg-info/entry_points.txt
 d41d8cd98f00b204e9800998ecf8427e  usr/lib/python3/dist-packages/freewrite-1.0.0.egg-info/requires.txt
 68b329da9893e34099c7d8ad5cb9c940  usr/lib/python3/dist-packages/freewrite-1.0.0.egg-info/top_level.txt
-7fb8cca487e08263df62cc0b29ad0590  usr/share/applications/freewrite.desktop
+1509c2f07c0a25d8c130c95cd9c065ef  usr/share/applications/freewrite.desktop
 d57cca1050702908cc8dda8413227037  usr/share/doc/freewrite/changelog.gz
-43ce849dfb491f8ba0f6067bdd5f9587  usr/share/doc/freewrite/copyright
-37a4b8f172582b7ca1f3a8646d99c74d  usr/share/freewrite/ContentView.py
+e7d7127fbbefcd40141a44a0ab74f679  usr/share/doc/freewrite/copyright
+5adc98eb3d7d94f04abb574cca2304aa  usr/share/freewrite/ContentView.py
 d41d8cd98f00b204e9800998ecf8427e  usr/share/freewrite/__init__.py
 d9035ec8889da9ab4593a2d9e6f1dfda  usr/share/freewrite/app_icons/1024-mac 1.png
 d9035ec8889da9ab4593a2d9e6f1dfda  usr/share/freewrite/app_icons/1024-mac.png
