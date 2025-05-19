@@ -292,12 +292,10 @@ Here's my journal entry:
         
         # Check current theme
         is_dark = self.color_scheme == "dark"
-        print(f"the dark: {is_dark}")
         
         # Remove spacing between entries
         self.entries_layout.setSpacing(0)
         self.entries_layout.setContentsMargins(0, 0, 0, 0)
-        print(self.entries)
  
         # Add entries to the sidebar
         for entry in self.entries:
@@ -383,21 +381,16 @@ Here's my journal entry:
     def show_chat_menu(self):
         menu = QMenu(self.chat_btn)
         trimmed_text = self.text_edit.toPlainText().strip()
-        print(f"Trimmed text length: {len(trimmed_text)}")
         gpt_full_text = self.ai_chat_prompt + "\n\n" + trimmed_text
         claude_full_text = self.claude_prompt + "\n\n" + trimmed_text
         gpt_url_length = len("https://chat.openai.com/?m=" + gpt_full_text)
         claude_url_length = len("https://claude.ai/new?q=" + claude_full_text)
-        print(f"GPT URL length: {gpt_url_length}, Claude URL length: {claude_url_length}")
         
         if gpt_url_length > 6000 or claude_url_length > 6000:
-            print("Adding 'Copy Prompt' action due to long URL")
             menu.addAction("Copy Prompt", self.copy_prompt_to_clipboard)
         elif len(trimmed_text) < 350:
-            print("Adding 'Write more first' action due to short text")
             menu.addAction("Write more first")
         else:
-            print("Adding ChatGPT, Claude, and Copy Prompt actions")
             menu.addAction("ChatGPT", self.open_chat_gpt)
             menu.addAction("Claude", self.open_claude)
             menu.addAction("Copy Prompt", self.copy_prompt_to_clipboard)

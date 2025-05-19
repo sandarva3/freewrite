@@ -17,10 +17,10 @@ Changes:
    * Initial release.
 Checksums-Sha1:
  a34986354d9a01062e5ae680125489407e3d2b6a 270616 freewrite_1.0.0_all.deb
- 145a99213847c5c34fe04310b50bf0885102519b 6942 freewrite_1.0.0_amd64.buildinfo
+ 9a563146b7d9be33cfb6d45b0d098a35846cad08 6942 freewrite_1.0.0_amd64.buildinfo
 Checksums-Sha256:
  aa60475a3e924723d58bde44fe7e853dec81c5f37f3fd96b465d739f427ca6a2 270616 freewrite_1.0.0_all.deb
- 72967dff4378aecb2e19f1af11213da3b98b9e64112a01ed80fdb0b4c5a14c22 6942 freewrite_1.0.0_amd64.buildinfo
+ 89783a1b4e3fed43057f593467e7cf53e9922223919a9f180c8f3ae097315178 6942 freewrite_1.0.0_amd64.buildinfo
 Files:
  26a80727e99489b8f78d7e8ca86e31c4 270616 editors optional freewrite_1.0.0_all.deb
- f4f38bc03b4557c7bbee4dcb4c078e33 6942 editors optional freewrite_1.0.0_amd64.buildinfo
+ 43a2b8fc14b8337a8da11d16f486cb59 6942 editors optional freewrite_1.0.0_amd64.buildinfo
